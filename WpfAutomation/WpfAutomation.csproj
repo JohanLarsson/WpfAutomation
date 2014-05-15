@@ -66,6 +66,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Automation.cs" />
+    <Compile Include="AutomationWriter.cs" />
+    <Compile Include="CodeVm.cs" />
     <Compile Include="EventInfoExt.cs" />
     <Compile Include="EventsSampler.xaml.cs">
       <DependentUpon>EventsSampler.xaml</DependentUpon>
@@ -76,6 +78,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

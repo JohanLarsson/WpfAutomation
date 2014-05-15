@@ -11,25 +11,25 @@
     {
         public static void SimulateClick(this CheckBox checkBox)
         {
-            checkBox.RaiseMouseButton(UIElement.PreviewMouseLeftButtonDownEvent, MouseButton.Left, 1)
-                    .RaiseMouseButton(Mouse.PreviewMouseDownEvent, MouseButton.Left, 1)
-                    .RaiseKeyboardFocusEvent(Keyboard.PreviewGotKeyboardFocusEvent)// old: System.Windows.Controls.TextBox new: System.Windows.Controls.CheckBox Content: IsChecked:False
-                // .SetProp(UIElement.IsKeyboardFocusWithinProperty, True)
-                // .SetProp(UIElement.IsKeyboardFocusedProperty, True)
-                    .RaiseRoutedEvent(FocusManager.GotFocusEvent)
-                    .RaiseKeyboardFocusEvent(Keyboard.GotKeyboardFocusEvent) // old: System.Windows.Controls.TextBox new: System.Windows.Controls.CheckBox Content: IsChecked:False
-                // .SetProp(UIElement.IsMouseCaptureWithinProperty, True)
-                // .SetProp(UIElement.IsMouseCapturedProperty, True)
+            checkBox.RaiseMouseButton(UIElement.PreviewMouseLeftButtonDownEvent, MouseButton.Left, 1) // value: true
+                    .RaiseMouseButton(Mouse.PreviewMouseDownEvent, MouseButton.Left, 1) // value: true
+                    .RaiseKeyboardFocusEvent(Keyboard.PreviewGotKeyboardFocusEvent) // old: System.Windows.Controls.Button: Clear new: System.Windows.Controls.CheckBox Content: IsChecked:True
+                // .SetProp(UIElement.IsKeyboardFocusWithinProperty, True) // value: true
+                // .SetProp(UIElement.IsKeyboardFocusedProperty, True) // value: true
+                    .RaiseRoutedEvent(FocusManager.GotFocusEvent) // value: true
+                    .RaiseKeyboardFocusEvent(Keyboard.GotKeyboardFocusEvent) // old: System.Windows.Controls.Button: Clear new: System.Windows.Controls.CheckBox Content: IsChecked:True
+                // .SetProp(UIElement.IsMouseCaptureWithinProperty, True) // value: true
+                // .SetProp(UIElement.IsMouseCapturedProperty, True) // value: true
                     .RaiseMouseEvent(Mouse.GotMouseCaptureEvent)
-                // .SetProp(UIElement.IsMouseDirectlyOverProperty, True)
-                    .RaiseMouseButton(UIElement.PreviewMouseLeftButtonUpEvent, MouseButton.Left, 1)
-                    .RaiseMouseButton(Mouse.PreviewMouseUpEvent, MouseButton.Left, 1)
-                // .SetProp(UIElement.IsMouseCaptureWithinProperty, False)
-                // .SetProp(UIElement.IsMouseCapturedProperty, False)
+                // .SetProp(UIElement.IsMouseDirectlyOverProperty, True) // value: true
+                    .RaiseMouseButton(UIElement.PreviewMouseLeftButtonUpEvent, MouseButton.Left, 1) // value: true
+                    .RaiseMouseButton(Mouse.PreviewMouseUpEvent, MouseButton.Left, 1) // value: true
+                // .SetProp(UIElement.IsMouseCaptureWithinProperty, False) // value: true
+                // .SetProp(UIElement.IsMouseCapturedProperty, False) // value: true
                     .RaiseMouseEvent(Mouse.LostMouseCaptureEvent)
-                // .SetProp(UIElement.IsMouseDirectlyOverProperty, False)
-                    .Toggle()
-                    .RaiseRoutedEvent(ButtonBase.ClickEvent);
+                // .SetProp(UIElement.IsMouseDirectlyOverProperty, False) // value: true
+                    .Toggle() // value: false
+                    .RaiseRoutedEvent(ButtonBase.ClickEvent); // value: false
         }
 
         public static void SimulateKey(this CheckBox checkBox, Key key)

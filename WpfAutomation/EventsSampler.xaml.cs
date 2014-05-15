@@ -1,11 +1,13 @@
 ﻿namespace WpfAutomation
 {
+    using System;
     using System.CodeDom.Compiler;
     using System.IO;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
+    using System.Windows.Data;
     using System.Windows.Input;
 
     /// <summary>
@@ -20,61 +22,133 @@
             InitializeComponent();
             _itw = new IndentedTextWriter(_sw);
             SubscribeUiElement(EventTextBox, EventCheckBox, EventButton);
+            SubscribeFrameworkElement(EventTextBox, EventCheckBox, EventButton);
             SubscribeControl(EventTextBox, EventCheckBox, EventButton);
             SubscribeTextBox(EventTextBox);
             SubscribeToggleButton(EventCheckBox);
-            SubscribeButton(EventButton);
+            SubscribeButton(EventButton, EventCheckBox);
         }
 
         private void SubscribeUiElement(params UIElement[] elements)
         {
             foreach (var e in elements)
             {
-                e.GotFocus += OnRoutedEvent;
-                e.LostFocus += OnRoutedEvent;
+                e.DragEnter += OnDragEventArgs;
+                e.DragLeave += OnDragEventArgs;
+                e.DragOver += OnDragEventArgs;
+                e.Drop += OnDragEventArgs;
+                e.FocusableChanged += OnDependencyPropertyChangedEventArgs;
+                e.GiveFeedback += OnGiveFeedbackEventArgs;
+                e.GotFocus += OnRoutedEventArgs;
+                e.GotKeyboardFocus += OnKeyboardFocusChangedEventArgs;
+                e.GotMouseCapture += OnMouseEventArgs;
+                e.GotStylusCapture += OnStylusEventArgs;
+                e.GotTouchCapture += OnTouchEventArgs;
+                e.IsEnabledChanged += OnDependencyPropertyChangedEventArgs;
+                e.IsHitTestVisibleChanged += OnDependencyPropertyChangedEventArgs;
+                e.IsKeyboardFocusedChanged += OnDependencyPropertyChangedEventArgs;
+                e.IsKeyboardFocusWithinChanged += OnDependencyPropertyChangedEventArgs;
+                e.IsMouseCapturedChanged += OnDependencyPropertyChangedEventArgs;
+                e.IsMouseCaptureWithinChanged += OnDependencyPropertyChangedEventArgs;
+                e.IsMouseDirectlyOverChanged += OnDependencyPropertyChangedEventArgs;
+                e.IsStylusCapturedChanged += OnDependencyPropertyChangedEventArgs;
+                e.IsStylusCaptureWithinChanged += OnDependencyPropertyChangedEventArgs;
+                e.IsStylusDirectlyOverChanged += OnDependencyPropertyChangedEventArgs;
+                e.IsVisibleChanged += OnDependencyPropertyChangedEventArgs;
+                e.KeyDown += OnKeyEventArgs;
+                e.KeyUp += OnKeyEventArgs;
+                //e.LayoutUpdated += OnEvent;
+                e.LostFocus += OnRoutedEventArgs;
+                e.LostKeyboardFocus += OnKeyboardFocusChangedEventArgs;
+                e.LostMouseCapture += OnMouseEventArgs;
+                e.LostStylusCapture += OnStylusEventArgs;
+                e.LostTouchCapture += OnTouchEventArgs;
+                e.ManipulationBoundaryFeedback += OnManipulationBoundaryFeedbackEventArgs;
+                e.ManipulationCompleted += OnManipulationCompletedEventArgs;
+                e.ManipulationDelta += OnManipulationDeltaEventArgs;
+                e.ManipulationInertiaStarting += OnManipulationInertiaStartingEventArgs;
+                e.ManipulationStarted += OnManipulationStartedEventArgs;
+                e.ManipulationStarting += OnManipulationStartingEventArgs;
+                e.MouseDown += OnMouseButtonEventArgs;
+                e.MouseEnter += OnMouseEventArgs;
+                e.MouseLeave += OnMouseEventArgs;
+                e.MouseLeftButtonDown += OnMouseButtonEventArgs;
+                e.MouseLeftButtonUp += OnMouseButtonEventArgs;
+                //e.MouseMove += OnMouseEventArgs;
+                e.MouseRightButtonDown += OnMouseButtonEventArgs;
+                e.MouseRightButtonUp += OnMouseButtonEventArgs;
+                e.MouseUp += OnMouseButtonEventArgs;
+                e.MouseWheel += OnMouseWheelEventArgs;
+                e.PreviewDragEnter += OnDragEventArgs;
+                e.PreviewDragLeave += OnDragEventArgs;
+                e.PreviewDragOver += OnDragEventArgs;
+                e.PreviewDrop += OnDragEventArgs;
+                e.PreviewGiveFeedback += OnGiveFeedbackEventArgs;
+                e.PreviewGotKeyboardFocus += OnKeyboardFocusChangedEventArgs;
+                e.PreviewKeyDown += OnKeyEventArgs;
+                e.PreviewKeyUp += OnKeyEventArgs;
+                e.PreviewLostKeyboardFocus += OnKeyboardFocusChangedEventArgs;
+                e.PreviewMouseDown += OnMouseButtonEventArgs;
+                e.PreviewMouseLeftButtonDown += OnMouseButtonEventArgs;
+                e.PreviewMouseLeftButtonUp += OnMouseButtonEventArgs;
+                //e.PreviewMouseMove += OnMouseEventArgs;
+                e.PreviewMouseRightButtonDown += OnMouseButtonEventArgs;
+                e.PreviewMouseRightButtonUp += OnMouseButtonEventArgs;
+                e.PreviewMouseUp += OnMouseButtonEventArgs;
+                e.PreviewMouseWheel += OnMouseWheelEventArgs;
+                //e.PreviewQueryContinueDrag += OnQueryContinueDragEventArgs;
+                e.PreviewStylusButtonDown += OnStylusButtonEventArgs;
+                e.PreviewStylusButtonUp += OnStylusButtonEventArgs;
+                e.PreviewStylusDown += OnStylusDownEventArgs;
+                e.PreviewStylusInAirMove += OnStylusEventArgs;
+                e.PreviewStylusInRange += OnStylusEventArgs;
+                e.PreviewStylusMove += OnStylusEventArgs;
+                e.PreviewStylusOutOfRange += OnStylusEventArgs;
+                e.PreviewStylusSystemGesture += OnStylusSystemGestureEventArgs;
+                e.PreviewStylusUp += OnStylusEventArgs;
+                e.PreviewTextInput += OnTextCompositionEventArgs;
+                e.PreviewTouchDown += OnTouchEventArgs;
+                e.PreviewTouchMove += OnTouchEventArgs;
+                e.PreviewTouchUp += OnTouchEventArgs;
+                e.QueryContinueDrag += OnQueryContinueDragEventArgs;
+                //e.QueryCursor += OnQueryCursorEventArgs;
+                e.StylusButtonDown += OnStylusButtonEventArgs;
+                e.StylusButtonUp += OnStylusButtonEventArgs;
+                e.StylusDown += OnStylusDownEventArgs;
+                e.StylusEnter += OnStylusEventArgs;
+                e.StylusInAirMove += OnStylusEventArgs;
+                e.StylusInRange += OnStylusEventArgs;
+                e.StylusLeave += OnStylusEventArgs;
+                e.StylusMove += OnStylusEventArgs;
+                e.StylusOutOfRange += OnStylusEventArgs;
+                e.StylusSystemGesture += OnStylusSystemGestureEventArgs;
+                e.StylusUp += OnStylusEventArgs;
+                e.TextInput += OnTextCompositionEventArgs;
+                e.TouchDown += OnTouchEventArgs;
+                e.TouchEnter += OnTouchEventArgs;
+                e.TouchLeave += OnTouchEventArgs;
+                e.TouchMove += OnTouchEventArgs;
+                e.TouchUp += OnTouchEventArgs;
 
-                e.PreviewGotKeyboardFocus += OnKeyboardFocus;
-                e.GotKeyboardFocus += OnKeyboardFocus;
-                e.PreviewLostKeyboardFocus += OnKeyboardFocus;
-                e.LostKeyboardFocus += OnKeyboardFocus;
+            }
+        }
 
-                e.PreviewKeyDown += OnKey;
-                e.KeyDown += OnKey;
-                e.PreviewKeyUp += OnKey;
-                e.KeyUp += OnKey;
-
-                e.PreviewTextInput += OnTextInput;
-                e.TextInput += OnTextInput;
-
-                e.IsKeyboardFocusedChanged += OnDpChanged;
-                e.IsKeyboardFocusWithinChanged += OnDpChanged;
-
-                e.PreviewMouseDown += OnMouseButton;
-                e.MouseDown += OnMouseButton;
-                e.PreviewMouseUp += OnMouseButton;
-                e.MouseUp += OnMouseButton;
-
-                e.PreviewMouseLeftButtonDown += OnMouseButton;
-                e.MouseLeftButtonDown += OnMouseButton;
-                e.PreviewMouseLeftButtonUp += OnMouseButton;
-                e.MouseLeftButtonUp += OnMouseButton;
-
-                e.PreviewMouseRightButtonDown += OnMouseButton;
-                e.MouseRightButtonDown += OnMouseButton;
-                e.PreviewMouseRightButtonUp += OnMouseButton;
-                e.MouseRightButtonUp += OnMouseButton;
-
-                e.PreviewMouseWheel += OnMouseWheel;
-                e.MouseWheel += OnMouseWheel;
-
-                e.MouseEnter += OnMouseEvent;
-                e.MouseLeave += OnMouseEvent;
-                e.GotMouseCapture += OnMouseEvent;
-                e.LostMouseCapture += OnMouseEvent;
-
-                e.IsMouseCapturedChanged += OnDpChanged;
-                e.IsMouseCaptureWithinChanged += OnDpChanged;
-                e.IsMouseDirectlyOverChanged += OnDpChanged;
+        private void SubscribeFrameworkElement(params FrameworkElement[] elements)
+        {
+            foreach (var e in elements)
+            {
+                e.ContextMenuClosing += OnContextMenuEventArgs;
+                e.ContextMenuOpening += OnContextMenuEventArgs;
+                e.DataContextChanged += OnDependencyPropertyChangedEventArgs;
+                e.Initialized += OnInitialized;
+                e.Loaded += OnRoutedEventArgs;
+                e.RequestBringIntoView += OnRequestBringIntoViewEventArgs;
+                e.SizeChanged += OnSizeChangedEventArgs;
+                e.SourceUpdated += OnDataTransferEventArgs;
+                e.TargetUpdated += OnDataTransferEventArgs;
+                e.ToolTipClosing += OnToolTipEventArgs;
+                e.ToolTipOpening += OnToolTipEventArgs;
+                e.Unloaded += OnRoutedEventArgs;
             }
         }
 
@@ -82,30 +156,88 @@
         {
             foreach (var c in controls)
             {
-                c.PreviewMouseDoubleClick += OnMouseButton;
-                c.MouseDoubleClick += OnMouseButton;
+                c.PreviewMouseDoubleClick += OnMouseButtonEventArgs;
+                c.MouseDoubleClick += OnMouseButtonEventArgs;
             }
         }
 
         private void SubscribeTextBox(TextBox tb)
         {
-            tb.SelectionChanged += OnRoutedEvent;
+            tb.SelectionChanged += OnRoutedEventArgs;
             tb.TextChanged += OnTextChanged;
         }
 
-        private void SubscribeButton(Button b)
+        private void SubscribeButton(params ButtonBase[] buttons)
         {
-            b.Click += OnRoutedEvent;
+            foreach (var b in buttons)
+            {
+                b.Click += OnRoutedEventArgs;
+            }
         }
 
         private void SubscribeToggleButton(ToggleButton tb)
         {
-            tb.Click += OnRoutedEvent;
-            tb.Checked += OnRoutedEvent;
-            tb.Unchecked += OnRoutedEvent;
+            tb.Checked += OnRoutedEventArgs;
+            tb.Indeterminate += OnRoutedEventArgs;
+            tb.Unchecked += OnRoutedEventArgs;
         }
 
-        private void OnRoutedEvent(object sender, RoutedEventArgs e)
+        private void OnDataTransferEventArgs(object sender, DataTransferEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseDataTransferEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+        private void OnRequestBringIntoViewEventArgs(object sender, RequestBringIntoViewEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseRequestBringIntoViewEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+        private void OnInitialized(object sender, EventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseInitialized()");
+            CodeBox.Text = _sw.ToString();
+        }
+        private void OnContextMenuEventArgs(object sender, ContextMenuEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseContextMenuEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+        private void OnSizeChangedEventArgs(object sender, SizeChangedEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseSizeChangedEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+        private void OnToolTipEventArgs(object sender, ToolTipEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseToolTipEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+
+        private void OnRoutedEventArgs(object sender, RoutedEventArgs e)
         {
             if (!IsSampling(sender))
             {
@@ -113,7 +245,7 @@
             }
             if (e.RoutedEvent == ToggleButton.CheckedEvent || e.RoutedEvent == ToggleButton.UncheckedEvent)
             {
-                _itw.WriteLine(".Toggle() // "+ GetValue(sender));
+                _itw.WriteLine(".Toggle() // " + GetValue(sender));
             }
             else
             {
@@ -123,7 +255,7 @@
             CodeBox.Text = _sw.ToString();
         }
 
-        private void OnDpChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void OnDependencyPropertyChangedEventArgs(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (!IsSampling(sender))
             {
@@ -142,7 +274,7 @@
             CodeBox.Text = _sw.ToString();
         }
 
-        private void OnKey(object sender, System.Windows.Input.KeyEventArgs e)
+        private void OnKeyEventArgs(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (!IsSampling(sender))
             {
@@ -153,6 +285,7 @@
             if (e.RoutedEvent == UIElement.PreviewKeyDownEvent)
             {
                 _itw.WriteLine();
+                _itw.Indent = 0;
                 var name = ToFirstCharLower(sender.GetType().Name);
                 _itw.WriteLine(name + code);
                 _itw.Indent = 3;
@@ -164,7 +297,133 @@
             CodeBox.Text = _sw.ToString();
         }
 
-        private void OnKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+        private void OnManipulationStartingEventArgs(object sender, ManipulationStartingEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseManipulationStartingEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+
+        private void OnManipulationStartedEventArgs(object sender, ManipulationStartedEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseManipulationStartedEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+        private void OnManipulationInertiaStartingEventArgs(object sender, ManipulationInertiaStartingEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseManipulationInertiaStartingEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+
+        private void OnManipulationDeltaEventArgs(object sender, ManipulationDeltaEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseManipulationDeltaEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+
+        private void OnManipulationCompletedEventArgs(object sender, ManipulationCompletedEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseManipulationCompletedEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+
+        private void OnManipulationBoundaryFeedbackEventArgs(object sender, ManipulationBoundaryFeedbackEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseManipulationBoundaryFeedbackEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+        private void OnGiveFeedbackEventArgs(object sender, GiveFeedbackEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseGiveFeedbackEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+        private void OnQueryContinueDragEventArgs(object sender, QueryContinueDragEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseQueryContinueDragEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+        private void OnQueryCursorEventArgs(object sender, QueryCursorEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseQueryCursorEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+
+        private void OnDragEventArgs(object sender, DragEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseDragEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+
+        private void OnStylusDownEventArgs(object sender, StylusDownEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseStylusDownEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+
+        private void OnStylusSystemGestureEventArgs(object sender, StylusSystemGestureEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseStylusSystemGestureEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+
+        private void OnStylusButtonEventArgs(object sender, StylusButtonEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseStylusButtonEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+
+        private void OnKeyboardFocusChangedEventArgs(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
         {
             if (!IsSampling(sender))
             {
@@ -186,7 +445,7 @@
             CodeBox.Text = _sw.ToString();
         }
 
-        private void OnTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void OnTextCompositionEventArgs(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
             if (!IsSampling(sender))
             {
@@ -196,7 +455,7 @@
             CodeBox.Text = _sw.ToString();
         }
 
-        private void OnMouseButton(object sender, MouseButtonEventArgs e)
+        private void OnMouseButtonEventArgs(object sender, MouseButtonEventArgs e)
         {
             if (!IsSampling(sender))
             {
@@ -221,7 +480,7 @@
             CodeBox.Text = _sw.ToString();
         }
 
-        private void OnMouseWheel(object sender, MouseWheelEventArgs e)
+        private void OnMouseWheelEventArgs(object sender, MouseWheelEventArgs e)
         {
             if (!IsSampling(sender))
             {
@@ -231,7 +490,7 @@
             CodeBox.Text = _sw.ToString();
         }
 
-        private void OnMouseEvent(object sender, MouseEventArgs e)
+        private void OnMouseEventArgs(object sender, MouseEventArgs e)
         {
             if (!IsSampling(sender))
             {
@@ -242,6 +501,25 @@
                 _itw.Indent = 0;
             }
             _itw.WriteLine(".RaiseMouseEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            CodeBox.Text = _sw.ToString();
+        }
+
+        private void OnTouchEventArgs(object sender, TouchEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseTouch({0}) // {1}", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event", e.TouchDevice);
+            CodeBox.Text = _sw.ToString();
+        }
+        private void OnStylusEventArgs(object sender, StylusEventArgs e)
+        {
+            if (!IsSampling(sender))
+            {
+                return;
+            }
+            _itw.WriteLine(".RaiseStylus({0}) // {1}", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event", e.StylusDevice);
             CodeBox.Text = _sw.ToString();
         }
 
