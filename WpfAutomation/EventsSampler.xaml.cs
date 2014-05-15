@@ -19,10 +19,11 @@
         {
             InitializeComponent();
             _itw = new IndentedTextWriter(_sw);
-            SubscribeUiElement(EventTextBox, EventCheckBox);
-            SubscribeControl(EventTextBox, EventCheckBox);
+            SubscribeUiElement(EventTextBox, EventCheckBox, EventButton);
+            SubscribeControl(EventTextBox, EventCheckBox, EventButton);
             SubscribeTextBox(EventTextBox);
             SubscribeToggleButton(EventCheckBox);
+            SubscribeButton(EventButton);
         }
 
         private void SubscribeUiElement(params UIElement[] elements)
@@ -254,6 +255,10 @@
         private bool IsSampling(object sender)
         {
             if (SampleCheckBox.IsChecked == true && ReferenceEquals(sender, EventCheckBox))
+            {
+                return true;
+            }
+            if (SampleButton.IsChecked == true && ReferenceEquals(sender, EventButton))
             {
                 return true;
             }

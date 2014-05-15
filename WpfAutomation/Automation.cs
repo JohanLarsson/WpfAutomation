@@ -4,6 +4,7 @@
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Input;
+    using System.Windows.Media;
 
     public static class Automation
     {
@@ -48,13 +49,13 @@
 
         public static void SimulateKey(this TextBoxBase textBox, Key key)
         {
-            textBox.RaiseKeyboardEvent(UIElement.PreviewKeyDownEvent, key)
-                   .RaiseKeyboardEvent(UIElement.KeyDownEvent, key)
-                   .RaiseKeyboardEvent(UIElement.KeyDownEvent, key)
-                   .SetKeyboardFocus()
-                   .RaiseKeyboardEvent(UIElement.PreviewKeyUpEvent, key)
-                   .RaiseKeyboardEvent(UIElement.KeyUpEvent, key);
-            textBox.AppendText(key.ToString());
+            textBox.RaiseKeyboardEvent(Keyboard.PreviewKeyDownEvent, key)
+                   .RaiseKeyboardEvent(Keyboard.KeyDownEvent, key)
+                   .RaiseTextInputEvent(TextCompositionManager.PreviewTextInputEvent)
+                   .RaiseTextChangedEvent(TextBoxBase.TextChangedEvent)
+                   .RaiseRoutedEvent(TextBoxBase.SelectionChangedEvent)
+                   .RaiseKeyboardEvent(Keyboard.PreviewKeyUpEvent, key)
+                   .RaiseKeyboardEvent(Keyboard.KeyUpEvent, key);
         }
 
         public static ToggleButton Toggle(this ToggleButton toggleButton)
@@ -92,7 +93,7 @@
 
         public static T RaiseKeyboardEvent<T>(this T e, RoutedEvent @event, Key key) where T : UIElement
         {
-            var arg = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, key)
+            var arg = new KeyEventArgs(Keyboard.PrimaryDevice, new FakePresentationSource(), 0, key)
             {
                 RoutedEvent = @event
             };
@@ -119,7 +120,7 @@
             e.RaiseEvent(arg);
             return e;
         }
-       
+
         public static T RaiseMouseEvent<T>(this T e, RoutedEvent @event) where T : UIElement
         {
             var arg = new MouseEventArgs(Mouse.PrimaryDevice, 0)
@@ -129,7 +130,7 @@
             e.RaiseEvent(arg);
             return e;
         }
-        
+
         public static T SetKeyboardFocus<T>(this T e) where T : UIElement
         {
             if (e.IsKeyboardFocused)
@@ -137,7 +138,7 @@
                 return e;
             }
             FocusManager.SetFocusedElement(e, Keyboard.Focus(e));
-            var arg = new RoutedEventArgs
+            var arg = new KeyboardFocusChangedEventArgs(Keyboard.PrimaryDevice, 0, null, e)
             {
                 RoutedEvent = UIElement.GotKeyboardFocusEvent
             };
@@ -149,6 +150,19 @@
         {
             e.SetValue(prop, value);
             return e;
+        }
+    }
+
+    public class FakePresentationSource : PresentationSource
+    {
+        protected override CompositionTarget GetCompositionTargetCore()
+        {
+            throw new System.NotImplementedException();
+        }
+        public override Visual RootVisual { get; set; }
+        public override bool IsDisposed
+        {
+            get { throw new System.NotImplementedException(); }
         }
     }
 }

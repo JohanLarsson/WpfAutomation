@@ -66,6 +66,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Automation.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="EventsSampler.xaml.cs">
       <DependentUpon>EventsSampler.xaml</DependentUpon>
     </Compile>
