@@ -1,5 +1,6 @@
 ﻿namespace WpfAutomation
 {
+    using System;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
@@ -47,15 +48,17 @@
                     .RaiseRoutedEvent(ButtonBase.ClickEvent);
         }
 
-        public static void SimulateKey(this TextBoxBase textBox, Key key)
+        public static void SimulateKey(this TextBox textBox, Key key, UndoAction undoAction)
         {
-            textBox.RaiseKeyboardEvent(Keyboard.PreviewKeyDownEvent, key)
-                   .RaiseKeyboardEvent(Keyboard.KeyDownEvent, key)
-                   .RaiseTextInputEvent(TextCompositionManager.PreviewTextInputEvent)
-                   .RaiseTextChangedEvent(TextBoxBase.TextChangedEvent)
-                   .RaiseRoutedEvent(TextBoxBase.SelectionChangedEvent)
-                   .RaiseKeyboardEvent(Keyboard.PreviewKeyUpEvent, key)
-                   .RaiseKeyboardEvent(Keyboard.KeyUpEvent, key);
+            string s = textBox.Text + key;
+            textBox.RaiseKeyboardEvent(Keyboard.PreviewKeyDownEvent, key) // value: 
+                   .RaiseKeyboardEvent(Keyboard.KeyDownEvent, key) // value: 
+                   .RaiseTextInputEvent(TextCompositionManager.PreviewTextInputEvent, s) // value:
+                   .SetProp(TextBox.TextProperty, s)
+                   .RaiseTextChangedEvent(TextBoxBase.TextChangedEvent, undoAction) // undoAction: Create value: a
+                   .RaiseRoutedEvent(TextBoxBase.SelectionChangedEvent) // value: a
+                   .RaiseKeyboardEvent(Keyboard.PreviewKeyUpEvent, key) // value: a
+                   .RaiseKeyboardEvent(Keyboard.KeyUpEvent, key); // value: a
         }
 
         public static ToggleButton Toggle(this ToggleButton toggleButton)
@@ -77,6 +80,25 @@
                 toggleButton.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
             }
             return toggleButton;
+        }
+
+        public static TextBox RaiseTextInputEvent(this TextBox tb, RoutedEvent @event, string resultText)
+        {
+            var arg = new TextCompositionEventArgs(
+                Keyboard.PrimaryDevice,
+                new TextComposition(InputManager.Current, tb, resultText))
+                                           {
+                                               RoutedEvent = @event
+                                           };
+            tb.RaiseEvent(arg);
+            return tb;
+        }
+
+        public static TextBox RaiseTextChangedEvent(this TextBox tb, RoutedEvent @event, UndoAction action)
+        {
+            var arg = new TextChangedEventArgs(@event, action);
+            tb.RaiseEvent(arg);
+            return tb;
         }
 
         public static T RaiseMouseButton<T>(this T e, RoutedEvent @event, MouseButton button, int clickCount)

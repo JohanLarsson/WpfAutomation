@@ -113,11 +113,11 @@
             }
             if (e.RoutedEvent == ToggleButton.CheckedEvent || e.RoutedEvent == ToggleButton.UncheckedEvent)
             {
-                _itw.WriteLine(".Toggle()");
+                _itw.WriteLine(".Toggle() // "+ GetValue(sender));
             }
             else
             {
-                _itw.WriteLine(".RaiseRoutedEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+                _itw.WriteLine(".RaiseRoutedEvent({0}) // {1}", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event", GetValue(sender));
             }
 
             CodeBox.Text = _sw.ToString();
@@ -129,7 +129,7 @@
             {
                 return;
             }
-            string s = string.Format(".SetProp({0}, {1})", e.Property.OwnerType.Name + "." + e.Property.Name + "Property", e.NewValue);
+            string s = string.Format(".SetProp({0}, {1}) // {2}", e.Property.OwnerType.Name + "." + e.Property.Name + "Property", e.NewValue, GetValue(sender));
             if (e.Property.ReadOnly)
             {
                 _itw.WriteLine(@"// " + s);
@@ -148,7 +148,7 @@
             {
                 return;
             }
-            var code = string.Format(".RaiseKeyboardEvent({0}, Key.{1})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event", e.Key);
+            var code = string.Format(".RaiseKeyboardEvent({0}, key) // {1}", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event", GetValue(sender));
 
             if (e.RoutedEvent == UIElement.PreviewKeyDownEvent)
             {
@@ -181,7 +181,8 @@
             {
                 return;
             }
-            _itw.WriteLine(".RaiseTextChangedEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+
+            _itw.WriteLine(".RaiseTextChangedEvent({0}, undoAction) // undoAction: {1} {2}", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event", e.UndoAction, GetValue(sender));
             CodeBox.Text = _sw.ToString();
         }
 
@@ -191,7 +192,7 @@
             {
                 return;
             }
-            _itw.WriteLine(".RaiseTextInputEvent({0})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event");
+            _itw.WriteLine(".RaiseTextInputEvent({0}, {1}) // {2}", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event", e.Text, GetValue(sender));
             CodeBox.Text = _sw.ToString();
         }
 
@@ -201,10 +202,10 @@
             {
                 return;
             }
-            var code = string.Format(".RaiseMouseButton({0}, {1}, {2})", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event", "MouseButton." + e.ChangedButton, e.ClickCount);
+            var code = string.Format(".RaiseMouseButton({0}, {1}, {2}) // {3}", e.RoutedEvent.OwnerType.Name + "." + e.RoutedEvent.Name + "Event", "MouseButton." + e.ChangedButton, e.ClickCount, GetValue(sender));
 
-            if (e.RoutedEvent == PreviewMouseLeftButtonDownEvent||
-                e.RoutedEvent == PreviewMouseDoubleClickEvent || 
+            if (e.RoutedEvent == PreviewMouseLeftButtonDownEvent ||
+                e.RoutedEvent == PreviewMouseDoubleClickEvent ||
                 e.RoutedEvent == PreviewMouseRightButtonDownEvent)
             {
                 _itw.WriteLine();
@@ -267,6 +268,26 @@
                 return true;
             }
             return false;
+        }
+
+        private string GetValue(object sender)
+        {
+            var tb = sender as TextBox;
+            if (tb != null)
+            {
+                return "value: " + tb.Text;
+            }
+            var toggleButton = sender as ToggleButton;
+            if (toggleButton != null)
+            {
+                return "value: " + (toggleButton.IsChecked == null ? "null" : ToFirstCharLower((toggleButton.IsChecked == true).ToString()));
+            }
+            var selector = sender as Selector;
+            if (selector != null)
+            {
+                return "value: " + selector.SelectedItem;
+            }
+            return "";
         }
 
         private static string ToFirstCharLower(string s)
